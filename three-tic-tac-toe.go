@@ -43,7 +43,42 @@ func (b *Board) show() {
 }
 
 //勝敗チェック
-// func (b *Board) judge() string {
+func (b *Board) judge() string {
+	//横の勝敗
+	for row := 0; row < 5; row++ {
+		for column := 0; column < (5 - 2); column++ {
+			if b.tokens[column+5*row] == b.tokens[(column+1)+5*row] && b.tokens[column+5*row] == b.tokens[(column+2)+5*row] && b.tokens[column+5*row] != 0 {
+				return b.get(column, row)
+			}
+		}
+	}
+	//縦の勝敗
+	for column := 0; column < 5; column++ {
+		for row := 0; row < (5 - 2); row++ {
+			if b.tokens[column+5*row] == b.tokens[column+5*(row+1)] && b.tokens[column+5*row] == b.tokens[column+5*(row+2)] && b.tokens[column+5*row] != 0 {
+				return b.get(column, row)
+			}
+		}
+	}
+	//斜め（右下）
+	for column := 0; column < (5 - 2); column++ {
+		for row := 0; row < (5 - 2); row++ {
+			if b.tokens[column+5*row] == b.tokens[(column+1)+5*(row+1)] && b.tokens[column+5*row] == b.tokens[(column+2)+5*(row+2)] && b.tokens[column+5*row] != 0 {
+				return b.get(column, row)
+			}
+		}
+	}
+	//斜め（左下）
+	for column := (0 + 2); column < 5; column++ {
+		for row := 0; row < (5 - 2); row++ {
+			if b.tokens[column+5*row] == b.tokens[(column-1)+5*(row+1)] && b.tokens[column+5*row] == b.tokens[(column-2)+5*(row+2)] && b.tokens[column+5*row] != 0 {
+				return b.get(column, row)
+			}
+		}
+	}
+	return "undergo"
+}
+
 // 	if b.tokens[0]+b.tokens[3]+b.tokens[6] == 3 {
 // 		return "o"
 // 	} else if b.tokens[1]+b.tokens[4]+b.tokens[7] == 3 {
@@ -114,7 +149,6 @@ func (b *Board) show() {
 // 	}
 // 	fmt.Println("Draw")
 // 	return
-// }
 
 func main() {
 	// b := &Board{
