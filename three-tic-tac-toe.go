@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+//import "regexp"
+
 type Board struct {
 	tokens []int // tokens[0] -> (0,0), tokens[1] -> (0,1), ...
 }
@@ -98,6 +100,10 @@ func (b *Board) play() {
 		}
 
 		fmt.Scanf("%d,%d", &y, &x)
+		// fmt.Scanf("%s", &s)
+
+		x = x - 1
+		y = y - 1
 
 		//盤の外に置こうとした時・重複した場所に置いた時のエラー処理
 		if ((0 <= x) && (x <= 4) && (0 <= y) && (y <= 4)) && (b.get(x, y) == ".") {
@@ -117,41 +123,6 @@ func (b *Board) play() {
 	fmt.Println("Draw")
 	return
 }
-
-// func (b *Board) play() {
-
-// 	var x, y int
-// 	var player string
-// 	m := map[string]string{"o": "1", "x": "2"}
-
-// 	for i := 0; i < 9; i++ {
-// 		if (i+1)%2 == 1 {
-// 			fmt.Print("Player 1: Input (x,y) ")
-// 			player = "o"
-// 		} else {
-// 			fmt.Print("Player 2: Input (x,y) ")
-// 			player = "x"
-// 		}
-
-// 		fmt.Scanf("%d,%d", &y, &x)
-
-// 		if ((0 <= x) && (x <= 2) && (0 <= y) && (y <= 2)) && (b.get(x, y) == ".") {
-// 			b.put(x, y, player)
-// 		} else {
-// 			i -= 1
-// 			fmt.Println("Error! Input again!")
-// 			continue
-// 		}
-// 		b.show()
-
-// 		if b.judge() == player {
-// 			fmt.Println("Player " + m[player] + " won")
-// 			return
-// 		}
-// 	}
-// 	fmt.Println("Draw")
-// 	return
-// }
 
 func main() {
 	b := &Board{
