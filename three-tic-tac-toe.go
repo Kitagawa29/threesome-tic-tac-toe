@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+import "strconv"
+
 //import "regexp"
 
 type Board struct {
@@ -84,28 +86,36 @@ func (b *Board) judge() string {
 func (b *Board) play() {
 
 	var x, y int
-	var player string
+	var player, s string
 	m := map[string]string{"o": "1", "x": "2", "+": "3"}
 
 	for i := 0; i < 25; i++ {
 		if (i+1)%3 == 1 {
-			fmt.Print("Player 1: Input (x,y) ")
+			fmt.Print("Player 1: Input x,y ")
 			player = "o"
 		} else if (i+1)%3 == 2 {
-			fmt.Print("Player 2: Input (x,y) ")
+			fmt.Print("Player 2: Input x,y ")
 			player = "x"
 		} else {
-			fmt.Print("Player 3: Input (x,y) ")
+			fmt.Print("Player 3: Input x,y ")
 			player = "+"
 		}
 
-		fmt.Scanf("%d,%d", &y, &x)
-		// fmt.Scanf("%s", &s)
+		// fmt.Scanf("%d,%d", &y, &x)
+		fmt.Scanf("%s", &s)
 
-		x = x - 1
-		y = y - 1
-
-		//盤の外に置こうとした時・重複した場所に置いた時のエラー処理
+		//形式が正しい時にのみ処理を行う
+		if (len(s) == 3) && (string(s[1]) == ",") {
+			x, _ = strconv.Atoi(string(s[0]))
+			y, _ = strconv.Atoi(string(s[2]))
+			x = x - 1
+			y = y - 1
+		} else {
+			i -= 1
+			fmt.Println("Error! Input form is wrong!")
+			continue
+		}
+		//盤の外に置こうとした時・重複した場所に置こうとした時のエラー処理
 		if ((0 <= x) && (x <= 4) && (0 <= y) && (y <= 4)) && (b.get(x, y) == ".") {
 			b.put(x, y, player)
 		} else {
@@ -113,6 +123,7 @@ func (b *Board) play() {
 			fmt.Println("Error! Input again!")
 			continue
 		}
+
 		b.show()
 
 		if b.judge() == player {
