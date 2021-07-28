@@ -6,6 +6,9 @@ import "strconv"
 
 //import "regexp"
 
+var p [3]string
+var n [3]string
+
 type Board struct {
 	tokens []int // tokens[0] -> (0,0), tokens[1] -> (0,1), ...
 }
@@ -14,22 +17,22 @@ type Board struct {
 // func (b *Board) get(x, y int) string    // interface
 
 func (b *Board) put(x, y int, u string) {
-	if u == "o" {
+	if u == p[0] {
 		b.tokens[x+5*y] = 1
-	} else if u == "x" {
+	} else if u == p[1] {
 		b.tokens[x+5*y] = 2
-	} else if u == "+" {
+	} else if u == p[2] {
 		b.tokens[x+5*y] = 3
 	}
 }
 
 func (b *Board) get(x, y int) string {
 	if b.tokens[x+5*y] == 1 {
-		return "o"
+		return p[0]
 	} else if b.tokens[x+5*y] == 2 {
-		return "x"
+		return p[1]
 	} else if b.tokens[x+5*y] == 3 {
-		return "+"
+		return p[2]
 	} else {
 		return "."
 	}
@@ -87,18 +90,30 @@ func (b *Board) play() {
 
 	var x, y int
 	var player, s string
-	m := map[string]string{"o": "1", "x": "2", "+": "3"}
+
+	fmt.Println("Please Input Your Names")
+	for i := 0; i < 3; i++ {
+		fmt.Print("Player ", i+1, " : ")
+		fmt.Scanf("%s", &n[i])
+	}
+
+	fmt.Println("Please Input Your Pieces")
+	for i := 0; i < 3; i++ {
+		fmt.Print(n[i], ": ")
+		fmt.Scanf("%s", &p[i])
+	}
+	m := map[string]string{p[0]: n[0], p[1]: n[1], p[2]: n[2]}
 
 	for i := 0; i < 25; i++ {
 		if (i+1)%3 == 1 {
-			fmt.Print("Player 1: Input x,y ")
-			player = "o"
+			fmt.Print(n[0], ": Input x,y ")
+			player = p[0]
 		} else if (i+1)%3 == 2 {
-			fmt.Print("Player 2: Input x,y ")
-			player = "x"
+			fmt.Print(n[1], ": Input x,y ")
+			player = p[1]
 		} else {
-			fmt.Print("Player 3: Input x,y ")
-			player = "+"
+			fmt.Print(n[2], ": Input x,y ")
+			player = p[2]
 		}
 
 		// fmt.Scanf("%d,%d", &y, &x)
@@ -106,8 +121,8 @@ func (b *Board) play() {
 
 		//形式が正しい時にのみ処理を行う
 		if (len(s) == 3) && (string(s[1]) == ",") {
-			x, _ = strconv.Atoi(string(s[0]))
-			y, _ = strconv.Atoi(string(s[2]))
+			y, _ = strconv.Atoi(string(s[0]))
+			x, _ = strconv.Atoi(string(s[2]))
 			x = x - 1
 			y = y - 1
 		} else {
