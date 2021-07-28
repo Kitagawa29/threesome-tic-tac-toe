@@ -79,42 +79,44 @@ func (b *Board) judge() string {
 	return "undergo"
 }
 
-// 	if b.tokens[0]+b.tokens[3]+b.tokens[6] == 3 {
-// 		return "o"
-// 	} else if b.tokens[1]+b.tokens[4]+b.tokens[7] == 3 {
-// 		return "o"
-// 	} else if b.tokens[2]+b.tokens[5]+b.tokens[8] == 3 {
-// 		return "o"
-// 	} else if b.tokens[0]+b.tokens[1]+b.tokens[2] == 3 {
-// 		return "o"
-// 	} else if b.tokens[3]+b.tokens[4]+b.tokens[5] == 3 {
-// 		return "o"
-// 	} else if b.tokens[6]+b.tokens[7]+b.tokens[8] == 3 {
-// 		return "o"
-// 	} else if b.tokens[0]+b.tokens[4]+b.tokens[8] == 3 {
-// 		return "o"
-// 	} else if b.tokens[2]+b.tokens[4]+b.tokens[6] == 3 {
-// 		return "o"
-// 	} else if b.tokens[0]+b.tokens[3]+b.tokens[6] == -3 {
-// 		return "x"
-// 	} else if b.tokens[1]+b.tokens[4]+b.tokens[7] == -3 {
-// 		return "x"
-// 	} else if b.tokens[2]+b.tokens[5]+b.tokens[8] == -3 {
-// 		return "x"
-// 	} else if b.tokens[0]+b.tokens[1]+b.tokens[2] == -3 {
-// 		return "x"
-// 	} else if b.tokens[3]+b.tokens[4]+b.tokens[5] == -3 {
-// 		return "x"
-// 	} else if b.tokens[6]+b.tokens[7]+b.tokens[8] == -3 {
-// 		return "x"
-// 	} else if b.tokens[0]+b.tokens[4]+b.tokens[8] == -3 {
-// 		return "x"
-// 	} else if b.tokens[2]+b.tokens[4]+b.tokens[6] == -3 {
-// 		return "x"
-// 	} else {
-// 		return "undergo"
-// 	}
-// }
+func (b *Board) play() {
+
+	var x, y int
+	var player string
+	m := map[string]string{"o": "1", "x": "2", "+": "3"}
+
+	for i := 0; i < 25; i++ {
+		if (i+1)%3 == 1 {
+			fmt.Print("Player 1: Input (x,y) ")
+			player = "o"
+		} else if (i+1)%3 == 2 {
+			fmt.Print("Player 2: Input (x,y) ")
+			player = "x"
+		} else {
+			fmt.Print("Player 3: Input (x,y) ")
+			player = "+"
+		}
+
+		fmt.Scanf("%d,%d", &y, &x)
+
+		//盤の外に置こうとした時・重複した場所に置いた時のエラー処理
+		if ((0 <= x) && (x <= 4) && (0 <= y) && (y <= 4)) && (b.get(x, y) == ".") {
+			b.put(x, y, player)
+		} else {
+			i -= 1
+			fmt.Println("Error! Input again!")
+			continue
+		}
+		b.show()
+
+		if b.judge() == player {
+			fmt.Println("Player " + m[player] + " won")
+			return
+		}
+	}
+	fmt.Println("Draw")
+	return
+}
 
 // func (b *Board) play() {
 
@@ -149,10 +151,11 @@ func (b *Board) judge() string {
 // 	}
 // 	fmt.Println("Draw")
 // 	return
+// }
 
 func main() {
-	// b := &Board{
-	// 	tokens: []int{0, 0, 0, 0, 0, 0, 0, 0, 0},
-	// }
-	// b.play()
+	b := &Board{
+		tokens: []int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	}
+	b.play()
 }
